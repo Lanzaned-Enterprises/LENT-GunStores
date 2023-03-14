@@ -4,9 +4,9 @@ games { 'gta5' }
 
 -- [[ Author ]] --
 author 'Izumi S. <https://discordapp.com/users/871877975346405388>'
-description 'Lananed Development | '
+description 'Lananed Development | Gun Stores'
 discord 'https://discord.lanzaned.com'
-github 'https://github.com/Lanzaned-Enterprises/'
+github 'https://github.com/Lanzaned-Enterprises/LENT-GunStores'
 docs 'https://docs.lanzaned.com/'
 
 -- [[ Version ]] --
@@ -42,7 +42,3 @@ client_scripts {
 
 -- [[ Tebex ]] --
 lua54 'yes'
-
-escrow_ignore {
-    'shared/*.lua'
-}
