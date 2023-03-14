@@ -1,5 +1,5 @@
 --[[ Version Checker ]] --
-local version = "100"
+local version = "101"
 
 AddEventHandler("onResourceStart", function(resource)
     if resource == GetCurrentResourceName() then
@@ -27,7 +27,7 @@ function checkUpdateEmbed(color, name, message, footer)
 end
 
 function checkResourceVersion()
-    PerformHttpRequest("", function(err, text, headers)
+    PerformHttpRequest("https://github.com/Lanzaned-Enterprises/LENT-GunStores/blob/master/version.txt", function(err, text, headers)
         if (version > text) then -- Using Dev Branch
             print(" ")
             print("---------- LANZANED GUNSTORES ----------")
