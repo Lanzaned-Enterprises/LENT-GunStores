@@ -2,7 +2,7 @@ Config = {}
 
 Config.FirearmsLicenseCheck = true
 
--- requiredJob = { "mechanic", "police" } || requiresLicense = true
+-- requiredJob = { "mechanic", "police" } || requiresLicense = true || weaponClass = "A"
 
 Config.Products = {
     ["weapons"] = {
@@ -22,7 +22,8 @@ Config.Products = {
             info = {},
             type = "item",
             slot = 2,
-            requiresLicense = true
+            requiresLicense = true,
+            weaponClass = "A",
         },
         [3] = { -- Desert Eagle / Class 1
             name = "weapon_de",
@@ -31,7 +32,8 @@ Config.Products = {
             info = {},
             type = "item",
             slot = 3,
-            requiresLicense = true
+            requiresLicense = true,
+            weaponClass = "A",
         },
         [4] = { -- FNX445 / Class 1
             name = "weapon_fnx45",
@@ -40,7 +42,8 @@ Config.Products = {
             info = {},
             type = "item",
             slot = 4,
-            requiresLicense = true
+            requiresLicense = true,
+            weaponClass = "A",
         },
         [5] = { -- Glock 17 / Class 1
             name = "weapon_glock17",
@@ -49,7 +52,8 @@ Config.Products = {
             info = {},
             type = "item",
             slot = 5,
-            requiresLicense = true
+            requiresLicense = true,
+            weaponClass = "A",
         },
         [6] = { -- M1911 / Class 1
             name = "weapon_m1911",
@@ -58,7 +62,8 @@ Config.Products = {
             info = {},
             type = "item",
             slot = 6,
-            requiresLicense = true
+            requiresLicense = true,
+            weaponClass = "A",
         },
         [7] = { -- Glock 22 / Class 1
             name = "weapon_glock22",
@@ -67,8 +72,11 @@ Config.Products = {
             info = {},
             type = "item",
             slot = 7,
-            requiresLicense = true
+            requiresLicense = true,
+            weaponClass = "A",
         },
+
+        
     },
 }
 
@@ -85,4 +93,16 @@ Config.Locations = {
         ["ped"] = "s_m_m_ammucountry",
         ["scenario"] = "WORLD_HUMAN_COP_IDLES",
     },
+    ['PlaetoBayGunStore'] = {
+        ["label"] = "Ammunation",
+        ["type"] = "weapon",
+        ["products"] = Config.Products["weapons"],
+
+        ["target"] = true,
+        ["icon"] = "fa-solid fa-gun", ["text"] = "Open Store", 
+
+        ["coords"] = vector4(-331.87, 6084.78, 31.45, 225.09),
+        ["ped"] = "s_m_m_ammucountry",
+        ["scenario"] = "WORLD_HUMAN_COP_IDLES",
+    }
 }

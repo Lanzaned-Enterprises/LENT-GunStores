@@ -7,23 +7,42 @@ local currentShop, currentData
 local pedSpawned = false
 local PedCreated = {}
 
+AddEventHandler('onResourceStart', function(resource)
+    if resource == GetCurrentResourceName() then
+        PlayerData = QBCore.Functions.GetPlayerData()
+    end
+end)
+
 AddEventHandler('onResourceStop', function(resource)
     if resource == GetCurrentResourceName() then
         DeletePeds()
     end
 end)
 
+-- [[ QBCore Events ]] --
+RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
+    PlayerData = QBCore.Functions.GetPlayerData()
+end)
+
+RegisterNetEvent('QBCore:Client:OnPlayerUnload', function()
+    PlayerData = nil
+end)
+
+RegisterNetEvent('QBCore:Player:SetPlayerData', function(val)
+    PlayerData = val
+end)
+
 -- [[ Check Function ]] --
 local function CheckForLicense()
-    if PlayerData.metadata["licences"].weapon and QBCore.Functions.HasItem("weaponlicense") or QBCore.Functions.HasItem("license_a") or QBCore.Functions.HasItem("license_b") or QBCore.Functions.HasItem("license_c") or QBCore.Functions.HasItem("license_d") then
+    if PlayerData.metadata["licences"].weapon then
         return true
     end
-    
+
     return false
 end
 
 -- [[ Store Functions ]] --
-local function SetupItems(shop, checkLicense)
+local function SetupItems(shop)
     local products = Config.Locations[shop].products
     local curJob
     local curGang
@@ -31,10 +50,11 @@ local function SetupItems(shop, checkLicense)
     for i = 1, #products do
         curJob = products[i].requiredJob
         curGang = products[i].requiredGang
+        curClass = products[i].weaponClass
 
         if curJob then goto jobCheck end
         if curGang then goto gangCheck end
-        if checkLicense then goto licenseCheck end
+        if curClass then goto classCheck end
 
         items[#items + 1] = products[i]
 
@@ -58,6 +78,21 @@ local function SetupItems(shop, checkLicense)
 
         goto nextIteration
 
+        :: classCheck ::
+        for i2 = 1, #curClass do
+            if QBCore.Functions.HasItem('license_a') and curClass == "A" then
+                items[#items + 1] = products[i]
+            elseif QBCore.Functions.HasItem('license_b') and curClass == "B" or curClass == "A" then
+                items[#items + 1] = products[i]
+            elseif QBCore.Functions.HasItem('license_c') and curClass == "C" or curClass == "A" or curClass == "B" then
+                items[#items + 1] = products[i]
+            elseif QBCore.Functions.HasItem('license_d') and curClass == "D" or curClass == "A" or curClass == "B" or curClass == "C" then
+                items[#items + 1] = products[i]
+            end
+        end
+
+        goto nextIteration
+            
         :: licenseCheck ::
         if not products[i].requiresLicense then
             items[#items + 1] = products[i]
@@ -65,6 +100,7 @@ local function SetupItems(shop, checkLicense)
 
         :: nextIteration ::
     end
+
     return items
 end
 
@@ -164,30 +200,4 @@ CreateThread(function()
             end
         end
     end
-end)
-
--- [[ QBCore Events ]] --
-RegisterNetEvent("qb-shops:client:UpdateShop", function(shop, itemData, amount)
-    TriggerServerEvent("qb-shops:server:UpdateShopItems", shop, itemData, amount)
-end)
-
-RegisterNetEvent("qb-shops:client:SetShopItems", function(shop, shopProducts)
-    Config.Locations[shop]["products"] = shopProducts
-end)
-
-RegisterNetEvent("qb-shops:client:RestockShopItems", function(shop, amount)
-    if not Config.Locations[shop]["products"] then return end
-
-    for k in pairs(Config.Locations[shop]["products"]) do
-        Config.Locations[shop]["products"][k].amount = Config.Locations[shop]["products"][k].amount + amount
-    end
-end)
-
--- [[ Net Events ]] --
-RegisterNetEvent('QBCore:Client:OnPlayerLoaded', function()
-    PlayerData = QBCore.Functions.GetPlayerData()
-end)
-
-RegisterNetEvent('QBCore:Player:SetPlayerData', function(val)
-    PlayerData = val
 end)
